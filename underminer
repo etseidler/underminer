@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require 'rubygems'
+require './lib/config'
 
 options = {}
 OptionParser.new do |opts|
@@ -19,6 +20,10 @@ if options[:input]
     else
         abort("Specified input file does not exist. Please try again.")
     end
+end
+
+if File.file?(Config::OUTPUT_FILENAME)
+  abort("output file #{Config::OUTPUT_FILENAME} already exists! please delete or rename before proceeding.")
 end
 
 lib_dir = File.expand_path('lib', __dir__)

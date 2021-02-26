@@ -15,7 +15,7 @@ class ProjectMetrics
   end
 
   def cycletime
-    filename = 'cycletimes.csv'
+    filename = Config::OUTPUT_FILENAME
     puts "Generating metrics..."
     num_rows = 0
 

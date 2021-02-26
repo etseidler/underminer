@@ -7,6 +7,7 @@ class Config
     ENV['UNDERMINER_BASE_URL']
   end
 
+  OUTPUT_FILENAME = 'cycletimes.csv'.freeze
   PROJECT_ID = '745'.freeze
   CURRENT_TARGET_VERSION_IDS = [1207, 1228, 1271, 1334].freeze
   FIXED_VERSION_IDS = %w[1207 1228 1271 1334 1302 944 1303 1207].freeze
