@@ -10,7 +10,8 @@ class Config
   OUTPUT_FILENAME = 'cycletimes.csv'.freeze
   PROJECT_ID = '745'.freeze
   CURRENT_TARGET_VERSION_IDS = [1207, 1228, 1271, 1334, 1456].freeze
-  FIXED_VERSION_IDS = CURRENT_TARGET_VERSION_IDS.map(&:to_s).concat(%w[1302 944 1303]).freeze
+  OLD_TARGET_VERSION_IDS = %w[1302 944 1303].freeze
+  FIXED_VERSION_IDS = CURRENT_TARGET_VERSION_IDS.map(&:to_s).concat(OLD_TARGET_VERSION_IDS).freeze
 
   ANALYSIS_STATUS_ID = '4'.freeze
   READY_TO_WORK_STATUS_ID = '10'.freeze
