@@ -39,7 +39,7 @@ class AllIssuesFetcher
     uri = URI("#{Config.base_url}/issues.json")
     params = {
       project_id: Config::PROJECT_ID,
-      fixed_version_id: Config::FIXED_VERSION_IDS.join('|'),
+      fixed_version_id: Config::ALL_TARGET_VERSION_IDS.join('|'),
       limit: 100,
       status_id: '*',
       offset: offset
