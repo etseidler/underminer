@@ -20,7 +20,7 @@ class ProjectMetrics
     num_rows = 0
 
     CSV.open(filename, 'w+') do |csv|
-      csv << ['Issue ID', 'Link', 'Title', 'Analysis', 'Ready to Work', 'In Progress', 'Code Review', 'QA', 'PO', 'Done', 'Assignee', 'Status', 'Days in Work', 'Tech Debt', 'Parent ID', 'Parent Name', 'Target Version', 'Tracker']
+      csv << ['Issue ID', 'Link', 'Title', 'Analysis', 'Ready to Work', 'In Progress', 'Code Review', 'QA', 'PO', 'Done', 'Assignee', 'Status', 'Days in Work', 'Tech Debt', 'Parent ID', 'Parent Name', 'Target Version', 'Tracker', 'Days in Dev']
       issue_details.compact.each do |issue|
         cycle_time = CycleTime.parse issue
         next if (Config::ISSUE_OUTLIERS.include? cycle_time[:id]) ||
@@ -36,7 +36,8 @@ class ProjectMetrics
                 is_tech_debt(cycle_time),
                 cycle_time[:parent_id], id_to_title[cycle_time[:parent_id]],
                 cycle_time[:target_version_name],
-                cycle_time[:tracker]
+                cycle_time[:tracker],
+                calculate_days_in_dev(cycle_time)
               ]
         num_rows += 1
       end
@@ -47,6 +48,16 @@ class ProjectMetrics
   def calculate_days_in_work(row)
     start_date = row[:in_progress] || row[:test] || row[:resolved] || row[:feedback]
     done_date = row[:done]
+    date_diff(start_date, done_date)
+  end
+
+  def calculate_days_in_dev(row)
+    start_date = row[:in_progress]
+    done_date = row[:test]
+    date_diff(start_date, done_date)
+  end
+
+  def date_diff(start_date, done_date)
     (start_date.nil? || done_date.nil?) ? nil : (DateTime.parse(done_date) - DateTime.parse(start_date)).to_f.round(1)
   end
 
