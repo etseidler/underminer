@@ -20,7 +20,7 @@ class ProjectMetrics
     num_rows = 0
 
     CSV.open(filename, 'w+') do |csv|
-      csv << ['Issue ID', 'Link', 'Title', 'Analysis', 'Ready to Work', 'In Progress', 'Code Review', 'QA', 'PO', 'Done', 'Assignee', 'Status', 'Days in Work', 'Tech Debt', 'Parent ID', 'Parent Name', 'Target Version', 'Tracker', 'Days in Dev']
+      csv << ['Issue ID', 'Link', 'Title', 'Analysis', 'Ready to Work', 'In Progress', 'Code Review', 'QA', 'PO', 'Done', 'Assignee', 'Status', 'Days in Work', 'Tech Debt', 'Parent ID', 'Parent Name', 'Target Version', 'Tracker', 'Days in Dev', 'Spike', 'Design']
       issue_details.compact.each do |issue|
         cycle_time = CycleTime.parse issue
         next if (Config::ISSUE_OUTLIERS.include? cycle_time[:id]) ||
@@ -37,7 +37,9 @@ class ProjectMetrics
                 cycle_time[:parent_id], id_to_title[cycle_time[:parent_id]],
                 cycle_time[:target_version_name],
                 cycle_time[:tracker],
-                calculate_days_in_dev(cycle_time)
+                calculate_days_in_dev(cycle_time),
+                is_spike(cycle_time),
+                is_design(cycle_time)
               ]
         num_rows += 1
       end
@@ -66,6 +68,16 @@ class ProjectMetrics
     tech_debt_in_title = regex.match(row[:subject])
     tech_debt_in_desc = regex.match(row[:description])
     tech_debt_in_title || tech_debt_in_desc ? 'Yes' : 'No'
+  end
+
+  def is_spike(row)
+    regex = Regexp.new(/spike/i)
+    regex.match(row[:subject]) ? 'Yes' : 'No'
+  end
+
+  def is_design(row)
+    regex = Regexp.new(/design/i)
+    regex.match(row[:subject]) ? 'Yes' : 'No'
   end
 
   def kickbacks
