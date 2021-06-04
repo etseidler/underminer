@@ -32,5 +32,5 @@ class Config
   }.freeze
 
   ISSUE_OUTLIERS = [36319, 40351, 40519, 79900, 83818]
-  TRACKERS_TO_SKIP = ['Epic', 'Feature', 'Support']
+  TRACKERS_TO_SKIP = ['Epic', 'Feature', 'Support', 'Key Decision']
 end
